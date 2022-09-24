@@ -1,8 +1,3 @@
-require 'pry-byebug'
-
-string = 'Zefir'
-shift = 120
-
 def caesar_cipher (string, shift)
     array = string.split('')
     final_array = Array.new
@@ -20,5 +15,11 @@ def caesar_cipher (string, shift)
     end
     puts final_array.join('')
 end
+
+print "Enter the phrase to encode: "
+string = gets.chomp
+
+print "Enter the shift value: "
+shift = gets.chomp.to_i
 
 caesar_cipher(string, shift)
