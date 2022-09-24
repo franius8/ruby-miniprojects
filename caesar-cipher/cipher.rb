@@ -1,7 +1,7 @@
 require 'pry-byebug'
 
-string = 'Zz#4@4^4#4'
-shift = 2
+string = 'Zefir'
+shift = 120
 
 def caesar_cipher (string, shift)
     array = string.split('')
@@ -10,7 +10,7 @@ def caesar_cipher (string, shift)
         number = char.ord
         if number.between?(65, 90) || number.between?(97, 122)
             number += shift
-           if number > 122 || (char.ord.between?(65, 90) || number > 90)
+           while number > 122 || (char.ord.between?(65, 90) && number > 90)
             number = number - 26
            end
            final_array << number.chr  
