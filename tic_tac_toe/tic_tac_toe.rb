@@ -25,22 +25,25 @@ class Game
     @current_player = 1
   end
 
-def play
-  puts round()
-end
+  def play
+    print_board
+    puts round
+  end
 
   def round
     loop do
       if @current_player == 1
         place_marker(@player1)
         @current_player = 2
+        print_board
         return 'Player 1 won!' if won?(@player1)
       else
         place_marker(@player2)
         @current_player = 1
+        print_board
         return 'Player 2 won!' if won?(@player2)
       end
-      return 'Draw' if board_full?()
+      return 'Draw' if board_full?
     end
   end
 
