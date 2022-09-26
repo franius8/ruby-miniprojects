@@ -1,4 +1,4 @@
-ALLOWED_COLORS = %w[red white yellow blue]
+ALLOWED_COLORS = %w[red white yellow blue orange purple]
 
 class Round
   def initialize
@@ -36,8 +36,12 @@ class Round
   end
 
   def collect_guess
-    puts 'Enter your guess separated by spaces: '
-    @guess = gets.chomp.split(' ')
+    loop do
+      puts 'Enter your guess separated by spaces: '
+      @guess = gets.chomp.split(' ')
+      return unless guess_valid? == false
+      puts 'Guess contains invalid colors. Enter it again.'
+    end
   end
 
   def increase_turn
@@ -52,6 +56,10 @@ class Round
   def lost_game
     puts "You did not guess correctly in the allotted time!"
     puts "The code was #{@code.join(' ')}"
+  end
+
+  def guess_valid?
+    @guess.all? {|color| ALLOWED_COLORS.include?(color)}
   end
 end
 
