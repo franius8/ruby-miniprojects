@@ -20,11 +20,16 @@ class Game
   def initialize
     @board = Array.new(10)
     @board[0] = 'not_used'
-    @players = [Player.new(self, 'x', 'Player 1'), Player.new(self, 'o', 'Player 2')]
+    print "Enter first player's name: "
+    player_1_name = gets.chomp
+    print "Enter second player's name: "
+    player_2_name = gets.chomp
+    @players = [Player.new(self, 'x', player_1_name), Player.new(self, 'o', player_2_name)]
     @current_player_index = 0
   end
 
   def play
+    puts "+-------+\nTicTacToe\n+-------+"
     print_board
     puts round
   end
