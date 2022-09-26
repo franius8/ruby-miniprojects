@@ -13,15 +13,22 @@ class Game
     @current_player = 1
   end
 
-  def play
+def play
+  puts round()
+end
+
+  def round
     loop do
       if @current_player == 1
         place_marker(@player1)
         @current_player = 2
+        return 'Player 1 won!' if won?(@player1)
       else
         place_marker(@player2)
         @current_player = 1
+        return 'Player 2 won!' if won?(@player2)
       end
+      return 'Draw' if board_full?()
     end
   end
 
@@ -29,6 +36,10 @@ class Game
     puts "#{player.name} please select position for your marker"
     position = player.position_selection
     @board[position] = player.marker
+  end
+
+  def end_game(player)
+
   end
 
   def available_positions
@@ -43,10 +54,6 @@ class Game
 
   def won?(player)
     WINNING_COMBINATIONS.any? { |line| line.all? { |position| @board[position] == player.marker } }
-  end
-
-  def draw?
-    self.board_full? && (self.won?(@player1) || self.won?(@player2))
   end
 end
 
