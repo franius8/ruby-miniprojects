@@ -53,10 +53,6 @@ class Game
     @board[position] = player.marker
   end
 
-  def end_game(player)
-
-  end
-
   def available_positions
     available_positions = []
     @board.each_index { |i| available_positions << i if @board[i].nil? }
