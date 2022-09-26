@@ -55,6 +55,16 @@ end
   def won?(player)
     WINNING_COMBINATIONS.any? { |line| line.all? { |position| @board[position] == player.marker } }
   end
+
+  def print_board
+    col_separator = ' | '
+    row_separator = '--+---+--'
+    label_for_position = proc { |position| @board[position] || position }
+    row_for_display = proc { |row| row.map(&label_for_position).join(col_separator) }
+    row_positions = [[1, 2, 3], [4, 5, 6], [7, 8, 9]]
+    rows_for_display = row_positions.map(&row_for_display)
+    puts rows_for_display.join("\n#{row_separator}\n")
+  end
 end
 
 class Player
