@@ -1,6 +1,29 @@
-ALLOWED_COLORS = %w[red white yellow blue orange purple]
+# frozen_string_literal: true
 
-class Round
+ALLOWED_COLORS = %w[red white yellow blue orange purple].freeze
+
+class Game
+  def initialize
+    puts 'Welcome to the mastermind game!'
+    puts "The allowed colors are #{ALLOWED_COLORS.join(' ')}"
+    game_choice
+  end
+
+  def game_choice
+    loop do
+      puts 'Enter type of game (1 - you will be guessing, 2 - the computer will be guessing)'
+      choice = gets.to_i
+      case choice
+      when 1 then RoundPlayer.new.play
+      when 2 then RoundComputer.new.play
+      else puts 'Not a valid choice.'
+      end
+    end
+  end
+end
+
+# Play a round with human player guessing
+class RoundPlayer
   def initialize
     @code = ALLOWED_COLORS.sample(4)
     @turn_number = 1
@@ -10,6 +33,7 @@ class Round
     loop do
       collect_guess
       return won_game if check_exactly_correct == 4
+
       check_guess
       return lost_game if @turn_number == 12
     end
@@ -18,8 +42,10 @@ class Round
   def check_guess
     exactly_correct = check_exactly_correct
     included = check_included - exactly_correct
-    puts "Right color and right position: #{exactly_correct}"
+    puts '---------------------------------'
+    puts "Right color, right position: #{exactly_correct}"
     puts "Right color, wrong position: #{included}"
+    puts '---------------------------------'
     increase_turn
   end
 
@@ -40,6 +66,7 @@ class Round
       puts 'Enter your guess separated by spaces: '
       @guess = gets.chomp.split(' ')
       return unless guess_valid? == false
+
       puts 'Guess contains invalid colors. Enter it again.'
     end
   end
@@ -50,18 +77,15 @@ class Round
 
   def won_game
     puts "You guessed correctly in #{@turn_number} guesses! Congrats!"
-    puts "The code was #{@code.join(' ')}"
+    puts "The code was #{@code.join(' ')}."
   end
 
   def lost_game
-    puts "You did not guess correctly in the allotted time!"
-    puts "The code was #{@code.join(' ')}"
+    puts 'You did not guess correctly in the allotted time!'
+    puts "The code was #{@code.join(' ')}."
   end
 
   def guess_valid?
-    @guess.all? {|color| ALLOWED_COLORS.include?(color)}
+    @guess.all? { |color| ALLOWED_COLORS.include?(color) }
   end
 end
-
-round = Round.new
-round.play
