@@ -5,19 +5,28 @@ ALLOWED_COLORS = %w[red white yellow blue orange purple].freeze
 class Game
   def initialize
     puts 'Welcome to the mastermind game!'
-    puts "The allowed colors are #{ALLOWED_COLORS.join(' ')}"
+    puts '---------------------------------'
+    puts 'The allowed colors are'
+    puts ALLOWED_COLORS.join(' ')
+    puts '---------------------------------'
     game_choice
   end
 
   def game_choice
     loop do
       puts 'Enter type of game (1 - you will be guessing, 2 - the computer will be guessing)'
-      choice = gets.to_i
-      case choice
-      when 1 then RoundPlayer.new.play
-      when 2 then RoundComputer.new.play
-      else puts 'Not a valid choice.'
-      end
+      initialize_round(gets.to_i)
+      puts 'Play again? (Y/N)'
+      choice = gets.chomp
+      return unless choice == 'Y'
+    end
+  end
+
+  def initialize_round(choice)
+    case choice
+    when 1 then RoundPlayer.new.play
+    when 2 then RoundComputer.new.play
+    else puts 'Not a valid choice.'
     end
   end
 end
@@ -89,3 +98,5 @@ class RoundPlayer
     @guess.all? { |color| ALLOWED_COLORS.include?(color) }
   end
 end
+
+Game.new
