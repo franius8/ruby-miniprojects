@@ -1,5 +1,3 @@
-require 'pry-byebug'
-
 # frozen_string_literal: true
 
 ALLOWED_COLORS = %w[red white yellow blue orange purple].freeze
@@ -123,40 +121,37 @@ class RoundComputer
       guess
       @previous_guesses << @guess
       return won_game if check_exactly_correct(@guess, @code) == 4
-      print @guess
-      print check_exactly_correct(@guess, @code)
-      print check_included(@guess, @code)
+
       increase_turn
       return lost_game if @turn_number == 12
 
       narrow_possibilities
-      puts @possibilities.length
     end
   end
 
   def guess
     return @guess = ALLOWED_COLORS.sample(4) if @guess.nil?
-    loop do
 
-        new_guess = @possibilities.sample(1).flatten
+    loop do
+      new_guess = @possibilities.sample(1).flatten
       return @guess = new_guess unless @previous_guesses.include?(new_guess)
     end
   end
 
   def narrow_possibilities
-    if @possibilities.nil?
-      @possibilities = ALL_COMBINATIONS.select {|n| compare_exactly_correct(n) && compare_included(n)}
-    else
-        @possibilities = @possibilities.select {|n| compare_exactly_correct(n) && compare_included(n)}
-    end
+    @possibilities = if @possibilities.nil?
+                       ALL_COMBINATIONS.select { |poss| compare_exactly_correct(poss) && compare_included(poss) }
+                     else
+                       @possibilities.select { |poss| compare_exactly_correct(poss) && compare_included(poss) }
+                     end
   end
 
-  def compare_exactly_correct (n)
-    check_exactly_correct(@guess, n) == check_exactly_correct(@guess, @code)
+  def compare_exactly_correct(poss)
+    check_exactly_correct(@guess, poss) == check_exactly_correct(@guess, @code)
   end
 
-  def compare_included (n)
-    check_included(@guess, n) == check_included(@guess, @code)
+  def compare_included(poss)
+    check_included(@guess, poss) == check_included(@guess, @code)
   end
 end
 
