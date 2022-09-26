@@ -1,3 +1,5 @@
+require 'pry-byebug'
+
 # frozen_string_literal: true
 
 ALLOWED_COLORS = %w[red white yellow blue orange purple].freeze
@@ -19,15 +21,15 @@ module CommonElements
     @choice.all? { |color| ALLOWED_COLORS.include?(color) }
   end
 
-  def check_exactly_correct(guess)
+  def check_exactly_correct(guess, code)
     result = 0
-    guess.each_with_index { |color, i| result += 1 if color == @code[i] }
+    guess.each_with_index { |color, i| result += 1 if color == code[i] }
     result
   end
 
-  def check_included(guess)
+  def check_included(guess, code)
     result = 0
-    guess.each { |color| result += 1 if @code.include?(color) }
+    guess.each { |color| result += 1 if code.include?(color) }
     result
   end
 
@@ -88,7 +90,7 @@ class RoundPlayer
   def play
     loop do
       @guess = collect('guess')
-      return won_game if check_exactly_correct(@guess) == 4
+      return won_game if check_exactly_correct(@guess, @code) == 4
 
       check_guess
       return lost_game if @turn_number == 12
@@ -96,8 +98,8 @@ class RoundPlayer
   end
 
   def check_guess
-    exactly_correct = check_exactly_correct(@guess)
-    included = check_included(@guess) - exactly_correct
+    exactly_correct = check_exactly_correct(@guess, @code)
+    included = check_included(@guess, @code) - exactly_correct
     puts '---------------------------------'
     puts "Right color, right position: #{exactly_correct}"
     puts "Right color, wrong position: #{included}"
@@ -118,14 +120,13 @@ class RoundComputer
   def play
     loop do
       guess
-      return won_game if check_exactly_correct(@guess) == 4
+      return won_game if check_exactly_correct(@guess, @code) == 4
 
-      check_guess
+      increase_turn
       return lost_game if @turn_number == 12
 
       narrow_possibilities
-      puts @possibilities
-      puts '---'
+      puts @possibilities.length
     end
   end
 
@@ -133,26 +134,16 @@ class RoundComputer
     return @guess = ALLOWED_COLORS.sample(4) if @guess.nil?
 
     loop do
-      new_guess = @possibilities.sample(4)
+      new_guess = @possibilities.sample(1)
       return @guess = new_guess if new_guess != @guess
     end
   end
 
-  def check_guess
-    exactly_correct = check_exactly_correct(@guess)
-    included = check_included(@guess) - exactly_correct
-    increase_turn
-  end
-
   def narrow_possibilities
     if @possibilities.nil?
-      @possibilities = ALL_COMBINATIONS.select do |n|
-        check_exactly_correct(n) == check_exactly_correct(@guess) && check_included(n) == check_included(@guess)
-      end
+      @possibilities = ALL_COMBINATIONS.select {|n| (check_exactly_correct(@guess, n) == check_exactly_correct(@guess, @code)) && (check_included(@guess, n) == check_included(@guess, @code))}
     else
-      @possibilities = @possibilities.select do |n|
-        check_exactly_correct(n) == check_exactly_correct(@guess) && check_included(n) == check_included(@guess)
-      end
+        @possibilities = @possibilities.select {|n| (check_exactly_correct(@guess, n) == check_exactly_correct(@guess, @code)) && (check_included(@guess, n) == check_included(@guess, @code))}
     end
   end
 end
