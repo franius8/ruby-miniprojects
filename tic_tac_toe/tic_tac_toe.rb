@@ -14,7 +14,7 @@ class Game
 
   def available_positions
     available_positions = []
-    @board.each_index { |i| available_positions << i + 1 if @board[i].nil? }
+    @board.each_index { |i| available_positions << i if @board[i].nil? }
     available_positions
   end
 
@@ -38,9 +38,10 @@ class Player
   def position_selection
     loop do
       print 'Selection: '
-      selection = get.to_i
-      return selection if game.board.available_positions.include?(selection)
-      puts "Selection already taken"
+      selection = gets.to_i
+      return selection if @game.available_positions.include?(selection)
+
+      puts 'Selection already taken'
     end
   end
 end
