@@ -1,3 +1,5 @@
+ALLOWED_COLORS = %w[red white yellow blue]
+
 class Round
   def initialize
     @code = %w[red white yellow blue]
@@ -5,23 +7,20 @@ class Round
   end
 
   def play
-    while @turn_number <= 12
+    loop do
       collect_guess
-      check_guess  
+      return won_game if check_exactly_correct == 4
+      check_guess
+      return lost_game if @turn_number == 12
     end
-    lost_game
   end
 
   def check_guess
     exactly_correct = check_exactly_correct
-    if exactly_correct == 4
-        won_game
-    else
-      included = check_included - exactly_correct
-      puts "Right color and right position: #{exactly_correct}"
-      puts "Right color, wrong position: #{included}"
-      increase_turn
-    end
+    included = check_included - exactly_correct
+    puts "Right color and right position: #{exactly_correct}"
+    puts "Right color, wrong position: #{included}"
+    increase_turn
   end
 
   def check_exactly_correct
@@ -47,12 +46,12 @@ class Round
 
   def won_game
     puts "You guessed correctly in #{@turn_number} guesses! Congrats!"
-    puts "The code was #{@code}"
+    puts "The code was #{@code.join(' ')}"
   end
 
   def lost_game
     puts "You did not guess correctly in the allotted time!"
-    puts "The code was #{@code}"
+    puts "The code was #{@code.join(' ')}"
   end
 end
 
