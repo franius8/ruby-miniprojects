@@ -8,9 +8,6 @@ class Game
   def initialize
     @board = Array.new(10)
     @board[0] = 'not_used'
-    @board[1] = 'x'
-    @board[2] = 'x'
-    @board[3] = 'x'
   end
 
   def available_positions
