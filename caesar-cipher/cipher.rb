@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-def is_letter?(number)
+def letter?(number)
   number.between?(65, 90) || number.between?(97, 122)
 end
 
@@ -13,7 +13,7 @@ def caesar_cipher(string, shift)
   final_array = []
   array.each do |char|
     number = char.ord
-    if is_letter?(number)
+    if letter?(number)
       number += shift
       number -= 26 while outside_range?(number, char)
       final_array << number.chr
