@@ -20,9 +20,8 @@ class Game
   def initialize
     @board = Array.new(10)
     @board[0] = 'not_used'
-    @player1 = Player.new(self, 'x', 'Player 1')
-    @player2 = Player.new(self, 'o', 'Player 2')
-    @current_player = 1
+    @players = [Player.new(self, 'x', 'Player 1'), Player.new(self, 'o', 'Player 2')]
+    @current_player_index = 0
   end
 
   def play
@@ -32,18 +31,12 @@ class Game
 
   def round
     loop do
-      if @current_player == 1
-        place_marker(@player1)
-        @current_player = 2
-        print_board
-        return 'Player 1 won!' if won?(@player1)
-      else
-        place_marker(@player2)
-        @current_player = 1
-        print_board
-        return 'Player 2 won!' if won?(@player2)
-      end
+      place_marker(@players[@current_player_index])
+      print_board
+      return "#{@players[@current_player_index].name} won!" if won?(@players[@current_player_index])
       return 'Draw' if board_full?
+
+      switch_player
     end
   end
 
@@ -57,6 +50,10 @@ class Game
     available_positions = []
     @board.each_index { |i| available_positions << i if @board[i].nil? }
     available_positions
+  end
+
+  def switch_player
+    @current_player_index = @current_player_index.zero? ? 1 : 0
   end
 
   def board_full?
@@ -98,6 +95,4 @@ class Player
   end
 end
 
-game = Game.new
-game.play
-
+TicTacToe.new
