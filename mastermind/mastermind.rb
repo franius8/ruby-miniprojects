@@ -2,7 +2,7 @@ ALLOWED_COLORS = %w[red white yellow blue orange purple]
 
 class Round
   def initialize
-    @code = %w[red white yellow blue]
+    @code = ALLOWED_COLORS.sample(4)
     @turn_number = 1
   end
 
