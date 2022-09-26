@@ -2,6 +2,22 @@
 
 ALLOWED_COLORS = %w[red white yellow blue orange purple].freeze
 
+module CommonElements
+    def collect(name)
+        loop do
+            puts "Enter your #{name} separated by spaces: "
+            @choice = gets.chomp.split(' ')
+            return @choice unless valid? == false
+      
+            puts "#{name.capitalize} contains invalid colors. Enter it again."
+        end
+    end
+
+    def valid?
+        @choice.all? { |color| ALLOWED_COLORS.include?(color) }
+    end
+end
+
 class Game
   def initialize
     puts 'Welcome to the mastermind game!'
@@ -33,6 +49,7 @@ end
 
 # Play a round with human player guessing
 class RoundPlayer
+  include CommonElements
   def initialize
     @code = ALLOWED_COLORS.sample(4)
     @turn_number = 1
@@ -40,7 +57,7 @@ class RoundPlayer
 
   def play
     loop do
-      collect_guess
+      @guess = collect('guess')
       return won_game if check_exactly_correct == 4
 
       check_guess
@@ -70,16 +87,6 @@ class RoundPlayer
     result
   end
 
-  def collect_guess
-    loop do
-      puts 'Enter your guess separated by spaces: '
-      @guess = gets.chomp.split(' ')
-      return unless guess_valid? == false
-
-      puts 'Guess contains invalid colors. Enter it again.'
-    end
-  end
-
   def increase_turn
     @turn_number += 1
   end
@@ -93,10 +100,14 @@ class RoundPlayer
     puts 'You did not guess correctly in the allotted time!'
     puts "The code was #{@code.join(' ')}."
   end
+end
 
-  def guess_valid?
-    @guess.all? { |color| ALLOWED_COLORS.include?(color) }
-  end
+class RoundComputer
+
+    def initialize
+        @code = collect('code')
+    end
+
 end
 
 Game.new
