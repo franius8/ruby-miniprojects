@@ -1,6 +1,18 @@
 # frozen_string_literal: true
 
-WINNING_COMBINATIONS = [[1, 2, 3], [4, 5, 6], [7, 8, 9], [1, 4, 7], [2, 5, 8], [3, 6, 9], [1, 5, 9], [3, 5, 7]]
+WINNING_COMBINATIONS = [[1, 2, 3], [4, 5, 6], [7, 8, 9], [1, 4, 7], [2, 5, 8], [3, 6, 9], [1, 5, 9], [3, 5, 7]].freeze
+
+class TicTacToe
+  def initialize
+    loop do
+      game = Game.new
+      game.play
+      puts 'Play again? (Y/N)'
+      choice = gets.chomp
+      return unless choice == 'Y'
+    end
+  end
+end
 
 class Game
   attr_reader :board, :player1, :player2
