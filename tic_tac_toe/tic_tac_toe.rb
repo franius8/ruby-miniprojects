@@ -2,6 +2,7 @@
 
 WINNING_COMBINATIONS = [[1, 2, 3], [4, 5, 6], [7, 8, 9], [1, 4, 7], [2, 5, 8], [3, 6, 9], [1, 5, 9], [3, 5, 7]].freeze
 
+# Plays endless games until user exits
 class TicTacToe
   def initialize
     loop do
@@ -14,6 +15,7 @@ class TicTacToe
   end
 end
 
+# Plays one TicTacToe game
 class Game
   attr_reader :board, :player1, :player2
 
@@ -80,6 +82,7 @@ class Game
   end
 end
 
+# Defines player attributes for the TicTacToe game
 class Player
   attr_reader :number, :marker, :name
 
@@ -93,6 +96,7 @@ class Player
     loop do
       print 'Selection: '
       selection = gets.to_i
+      exit(0) if selection.zero?
       return selection if @game.available_positions.include?(selection)
 
       puts 'Selection already taken'
