@@ -64,7 +64,7 @@ class Game
       puts 'Enter type of game (1 - you will be guessing, 2 - the computer will be guessing)'
       initialize_round(gets.to_i)
       puts 'Play again? (Y/N)'
-      choice = gets.chomp
+      choice = gets.chomp.upcase
       return unless choice == 'Y'
     end
   end
@@ -115,13 +115,17 @@ class RoundComputer
     @turn_number = 1
     @name = 'The computer'
     @code = collect('code')
+    @previous_guesses = []
   end
 
   def play
     loop do
       guess
+      @previous_guesses << @guess
       return won_game if check_exactly_correct(@guess, @code) == 4
-
+      print @guess
+      print check_exactly_correct(@guess, @code)
+      print check_included(@guess, @code)
       increase_turn
       return lost_game if @turn_number == 12
 
@@ -132,19 +136,27 @@ class RoundComputer
 
   def guess
     return @guess = ALLOWED_COLORS.sample(4) if @guess.nil?
-
     loop do
-      new_guess = @possibilities.sample(1)
-      return @guess = new_guess if new_guess != @guess
+
+        new_guess = @possibilities.sample(1).flatten
+      return @guess = new_guess unless @previous_guesses.include?(new_guess)
     end
   end
 
   def narrow_possibilities
     if @possibilities.nil?
-      @possibilities = ALL_COMBINATIONS.select {|n| (check_exactly_correct(@guess, n) == check_exactly_correct(@guess, @code)) && (check_included(@guess, n) == check_included(@guess, @code))}
+      @possibilities = ALL_COMBINATIONS.select {|n| compare_exactly_correct(n) && compare_included(n)}
     else
-        @possibilities = @possibilities.select {|n| (check_exactly_correct(@guess, n) == check_exactly_correct(@guess, @code)) && (check_included(@guess, n) == check_included(@guess, @code))}
+        @possibilities = @possibilities.select {|n| compare_exactly_correct(n) && compare_included(n)}
     end
+  end
+
+  def compare_exactly_correct (n)
+    check_exactly_correct(@guess, n) == check_exactly_correct(@guess, @code)
+  end
+
+  def compare_included (n)
+    check_included(@guess, n) == check_included(@guess, @code)
   end
 end
 
