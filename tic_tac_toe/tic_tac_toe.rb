@@ -8,6 +8,8 @@ class Game
   def initialize
     @board = Array.new(10)
     @board[0] = 'not_used'
+    @player1 = Player.new(self, 'x')
+    @player2 = Player.new(self, 'o')
   end
 
   def available_positions
@@ -28,14 +30,22 @@ end
 class Player
   attr_reader :number, :marker
 
-  def initialize(number, marker)
-    @number = number
+  def initialize(game, marker)
+    @game = game
     @marker = marker
+  end
+
+  def position_selection
+    loop do
+      print 'Selection: '
+      selection = get.to_i
+      return selection if game.board.available_positions.include?(selection)
+      puts "Selection already taken"
+    end
   end
 end
 
 game = Game.new
 puts game.available_positions
 print game.board
-player1 = Player.new(1, 'x')
-puts game.won?(player1)
+puts game.won?(game.player1)
