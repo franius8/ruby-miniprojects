@@ -2,6 +2,11 @@
 
 # Module with elements used in both decode and encode classes
 module CommonElements
+  def perform_shift
+    get_user_input
+    put_result
+  end
+  
   def get_user_input
     print "Enter the phrase to #{@mode}: "
     @string = gets.chomp
@@ -19,9 +24,22 @@ module CommonElements
     end
   end
 
+  def put_result
+    shift_string
+    puts @final_array.join('')
+  end
+
+  def shift_string
+    @string.split('').each do |char|
+      @char = char
+      @final_array << return_shifted_value
+    end
+  end
+
   def letter?
     @number.between?(65, 90) || @number.between?(97, 122)
   end
+
 end
 
 # Class initializing the cipher
@@ -45,21 +63,7 @@ class CipherEncode
   def initialize
     @mode = 'encode'
     @final_array = []
-
-    get_user_input
-    caesar_encode
-  end
-
-  def caesar_encode
-    encode_string
-    puts @final_array.join('')
-  end
-
-  def encode_string
-    @string.split('').each do |char|
-      @char = char
-      @final_array << return_shifted_value
-    end
+    perform_shift
   end
 
   def shift_value
@@ -79,21 +83,7 @@ class CipherDecode
   def initialize
     @mode = 'decode'
     @final_array = []
-
-    get_user_input
-    caesar_decode
-  end
-
-  def caesar_decode
-    decode_string
-    puts @final_array.join('')
-  end
-
-  def decode_string
-    @string.split('').each do |char|
-      @char = char
-      @final_array << return_shifted_value
-    end
+    perform_shift
   end
 
   def shift_value
