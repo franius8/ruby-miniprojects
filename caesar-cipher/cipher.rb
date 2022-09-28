@@ -1,23 +1,21 @@
 # frozen_string_literal: true
 
-
+# Class initializing the cipher
 class CaesarCipher
   def initialize
     loop do
       puts 'Welcome to Caesar Cipher!'
       puts 'Press 1 to encode or 2 to decode'
       case gets.chomp.to_i
-      when 1
-      CipherEncode.new
-      when 2
-      decode
-      else
-      puts 'Invalid selection, try again'
-      end 
+      when 1 then CipherEncode.new
+      when 2 then decode
+      else puts 'Invalid selection, try again'
+      end
     end
   end
 end
 
+# Class for encoding strings
 class CipherEncode
   def initialize
     print 'Enter the phrase to encode: '
@@ -35,7 +33,7 @@ class CipherEncode
     puts @final_array.join('')
   end
 
-  def encode_string(string, shift)
+  def encode_string(string, _shift)
     string.split('').each do |char|
       @final_array << return_shifted_value(char)
     end
@@ -59,7 +57,7 @@ class CipherEncode
   def letter?
     @number.between?(65, 90) || @number.between?(97, 122)
   end
-  
+
   def outside_range?(char)
     @number > 122 || (char.ord.between?(65, 90) && @number > 90)
   end
