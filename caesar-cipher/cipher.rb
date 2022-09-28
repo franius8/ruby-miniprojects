@@ -3,11 +3,11 @@
 # Module with elements used in both decode and encode classes
 module CommonElements
   def perform_shift
-    get_user_input
+    collect_user_input
     put_result
   end
-  
-  def get_user_input
+
+  def collect_user_input
     print "Enter the phrase to #{@mode}: "
     @string = gets.chomp
 
@@ -39,7 +39,6 @@ module CommonElements
   def letter?
     @number.between?(65, 90) || @number.between?(97, 122)
   end
-
 end
 
 # Class initializing the cipher
