@@ -54,8 +54,19 @@ class Tree
             root.right = delete(value, root.right)
         elsif root.value > value
             root.left = delete(value, root.left)
+        else
+            root.value = lowest_node(root.right).value
+            root.delete(root.value, root.right)
         end
         root
+    end
+
+    def lowest_node(node)
+        current_lowest = node
+        until current_lowest.left.nil?
+            current_lowest = current_lowest.left
+        end
+        current_lowest
     end
 
     def find(value, root = @root)
@@ -77,7 +88,7 @@ class Tree
       end
 end
 
-class Node
+class Node < Tree
     attr_accessor :value, :left, :right
     def initialize(value, left = nil, right = nil)
         @value = value
@@ -88,5 +99,5 @@ end
 
 tree = Tree.new([1, 7, 4, 23, 8, 9, 4, 3, 5, 7, 9, 67, 6345, 324])
 tree.insert(42)
-tree.delete(324)
+tree.delete(8)
 tree.pretty_print
