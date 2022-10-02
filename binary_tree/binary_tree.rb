@@ -40,7 +40,22 @@ class Tree
                 insert(value, root.left)   
             end
        end
+    end
 
+    def delete(value, root = @root)
+        if root.left.value == value && root.left.left == nil && root.left.right == nil
+            root.left = nil
+            return root
+        elsif root.right.value == value && root.right.left == nil && root.right.right == nil
+            root.right = nil
+            return root
+        end
+        if root.value < value
+            root.right = delete(value, root.right)
+        elsif root.value > value
+            root.left = delete(value, root.left)
+        end
+        root
     end
 
     def find(value, root = @root)
@@ -73,4 +88,5 @@ end
 
 tree = Tree.new([1, 7, 4, 23, 8, 9, 4, 3, 5, 7, 9, 67, 6345, 324])
 tree.insert(42)
+tree.delete(324)
 tree.pretty_print
