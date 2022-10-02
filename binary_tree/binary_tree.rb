@@ -25,6 +25,24 @@ class Tree
         end
     end
 
+    def insert(value, root = @root)
+        return if value == root.value
+       if root.value < value
+            if root.right == nil 
+                root.right = Node.new(value)
+            else  
+                insert(value, root.right)
+            end
+       elsif root.value > value
+            if root.left == nil
+                root.left = Node.new(value)
+            else
+                insert(value, root.left)   
+            end
+       end
+
+    end
+
     def find(value, root = @root)
       if root.value == value
         return root
@@ -54,4 +72,5 @@ class Node
 end 
 
 tree = Tree.new([1, 7, 4, 23, 8, 9, 4, 3, 5, 7, 9, 67, 6345, 324])
+tree.insert(42)
 tree.pretty_print
