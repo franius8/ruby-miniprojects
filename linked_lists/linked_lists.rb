@@ -76,6 +76,30 @@ class LinkedList
         end
     end
 
+    def insert_at(value,index)
+        @linked_array.each do |node|
+            next if node.next_node.nil?
+            if node.next_node > index
+              node.next_node += 1
+            end
+        end
+        @linked_array << Node.new(value, index+1)
+    end
+
+    def remove_at(index)
+        if index == @linked_array.length
+            @linked_array.delete(@linked_array.find {|node| node.next_node == nil})
+        else
+            @linked_array.delete(@linked_array.find {|node| node.next_node == index+1})
+            @linked_array.each do |node|
+                next if node.next_node.nil?
+                if node.next_node > index
+                    node.next_node -= 1
+                end
+            end
+        end
+    end
+    
     def print_list
         print @linked_array
     end
@@ -94,5 +118,7 @@ list = LinkedList.new
 list.append(5)
 list.append(10)
 list.append(15)
+list.insert_at(25,1)
 list.prepend(20)
-print list.to_s
+list.remove_at(3)
+puts list.to_s
