@@ -11,7 +11,7 @@ class Tree
         if ary.is_a?(Integer) || ary.length == 1
             return Node.new(ary[0])
         else
-            middle = ary.length/2 + ary.length % 2
+            middle = ary.length/2
             root = Node.new(ary[middle])
             root.left = build_tree(ary[0..middle-1])
             if ary.length == 2 || ary.length == 3
