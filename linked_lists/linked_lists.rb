@@ -56,18 +56,24 @@ class LinkedList
         end
     end
 
-    def to_s(index = 0)
+    def to_s
+        string =''
+        index = 0
+        while index < @linked_array.length
+            string.concat(to_s_converter(index))
+            index += 1
+        end
+        string
+    end
+    
+    def to_s_converter(index)
         if index == @linked_array.length-1
             node = @linked_array.find {|node| node.next_node == nil}
+            return "#{node.value} -> nil\n"
         else
             node = @linked_array.find {|node| node.next_node == index+1}
+            return "#{node.value} -> "
         end
-        if node == nil
-            print "nil"
-            return
-        end
-        print "#{node.value} -> "
-        to_s(index+1)
     end
 
     def print_list
@@ -89,4 +95,4 @@ list.append(5)
 list.append(10)
 list.append(15)
 list.prepend(20)
-list.to_s
+print list.to_s
