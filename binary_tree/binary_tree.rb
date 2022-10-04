@@ -107,6 +107,10 @@ class Tree
         end
     end
 
+    def level_order
+
+    end
+
     def pretty_print(node = @root, prefix = '', is_left = true)
         pretty_print(node.right, "#{prefix}#{is_left ? '│   ' : '    '}", false) if node.right
         puts "#{prefix}#{is_left ? '└── ' : '┌── '}#{node.value}"
@@ -127,3 +131,5 @@ tree = Tree.new([1, 7, 4, 23, 8, 9, 4, 3, 5, 7, 9, 67, 6345, 324])
 tree.insert(42)
 tree.delete(8)
 tree.pretty_print
+node = tree.find(42)
+puts tree.depth(node)
