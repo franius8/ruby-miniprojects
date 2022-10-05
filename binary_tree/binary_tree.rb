@@ -3,7 +3,6 @@ require 'pry-byebug'
 class Tree
     def initialize(ary)
         @ary = ary.uniq.sort
-        @tree_data = []
         @root = build_tree(@ary)
     end
 
