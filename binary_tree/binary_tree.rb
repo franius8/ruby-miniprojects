@@ -122,6 +122,16 @@ class Tree
         result unless block_given?
     end
 
+    def balanced?(root = @root)
+        return true if root.nil?
+        if (height(root.left) - height(root.right)).abs <= 1
+            return true if balanced?(root.left) && balanced?(root.right)
+            return false
+        else
+            return false
+        end
+    end 
+
     def pretty_print(node = @root, prefix = '', is_left = true)
         pretty_print(node.right, "#{prefix}#{is_left ? '│   ' : '    '}", false) if node.right
         puts "#{prefix}#{is_left ? '└── ' : '┌── '}#{node.value}"
