@@ -132,6 +132,13 @@ class Tree
         end
     end 
 
+    def rebalance
+        return if balanced?
+        ary = level_order.uniq.sort
+        puts ary
+        @root = build_tree(ary)
+    end
+
     def pretty_print(node = @root, prefix = '', is_left = true)
         pretty_print(node.right, "#{prefix}#{is_left ? '│   ' : '    '}", false) if node.right
         puts "#{prefix}#{is_left ? '└── ' : '┌── '}#{node.value}"
