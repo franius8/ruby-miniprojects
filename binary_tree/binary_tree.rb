@@ -3,7 +3,6 @@ require 'pry-byebug'
 class Tree
     def initialize(ary)
         @ary = ary.uniq.sort
-        @tree_data = []
         @root = build_tree(@ary)
     end
 
@@ -108,7 +107,36 @@ class Tree
     end
 
     def level_order
+        queue = [@root]
+        result = []
+        until queue.empty?
+            node = queue.shift
+            if block_given?
+                yield(node)
+            else
+                result << node.value
+            end
+            queue << node.left unless node.left.nil?
+            queue << node.right unless node.right.nil?
+        end
+        result unless block_given?
+    end
 
+    def balanced?(root = @root)
+        return true if root.nil?
+        if (height(root.left) - height(root.right)).abs <= 1
+            return true if balanced?(root.left) && balanced?(root.right)
+            return false
+        else
+            return false
+        end
+    end 
+
+    def rebalance
+        return if balanced?
+        ary = level_order.uniq.sort
+        puts ary
+        @root = build_tree(ary)
     end
 
     def pretty_print(node = @root, prefix = '', is_left = true)
