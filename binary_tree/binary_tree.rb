@@ -203,13 +203,16 @@ class Node < Tree
   end
 end
 
-tree = Tree.new([1, 7, 4, 23, 8, 9, 4, 3, 5, 7, 9, 67, 6345, 324])
-tree.insert(42)
-tree.delete(3)
-tree.rebalance
+tree = Tree.new((Array.new(15) { rand(1..100) }))
+puts "Is the tree balanced? #{tree.balanced?}"
+print "#{tree.level_order}\n#{tree.pre_order}\n#{tree.post_order}\n#{tree.in_order}\n"
 tree.pretty_print
-node = tree.find(42)
-puts tree.depth(node)
-print tree.in_order
-print tree.pre_order
-print tree.post_order
+puts 'Adding 10 elements higher than 100...'
+10.times do tree.insert(rand(100..1000)) end
+tree.pretty_print
+puts "Is the tree balanced? #{tree.balanced?}"
+puts 'Rebalancing tree...'
+tree.rebalance
+puts "Is the tree balanced? #{tree.balanced?}"
+tree.pretty_print
+print "#{tree.level_order}\n#{tree.pre_order}\n#{tree.post_order}\n#{tree.in_order}\n"
