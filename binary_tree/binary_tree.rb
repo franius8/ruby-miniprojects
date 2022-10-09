@@ -62,61 +62,60 @@ end
 
 # Module containing methods changing the binary tree
 module BangMethods
-    def insert(value, root = @root)
-        return if value == root.value
-    
-        if root.value < value
-          if root.right.nil?
-            root.right = Node.new(value)
-          else
-            insert(value, root.right)
-          end
-        elsif root.value > value
-          if root.left.nil?
-            root.left = Node.new(value)
-          else
-            insert(value, root.left)
-          end
-        end
-      end
-    
-      def delete(value, node = @root)
-        return node if node.nil?
-    
-        if value < node.value
-          node.left = delete(value, node.left)
-        elsif value > node.value
-          node.right = delete(value, node.right)
-        else
-          if node.left.nil?
-            temp = node.right
-            node = nil
-            return temp
-          elsif node.right.nil?
-            temp = node.left
-            node = nil
-            return temp
-          end
-          temp = lowest_node(node.right)
-          node.value = temp.value
-          node.right = delete(temp.value, node.right)
-        end
-        node
-      end
+  def insert(value, root = @root)
+    return if value == root.value
 
-    def lowest_node(node)
-      current_lowest = node
-      current_lowest = current_lowest.left until current_lowest.left.nil?
-      current_lowest
+    if root.value < value
+      if root.right.nil?
+        root.right = Node.new(value)
+      else
+        insert(value, root.right)
+      end
+    elsif root.value > value
+      if root.left.nil?
+        root.left = Node.new(value)
+      else
+        insert(value, root.left)
+      end
     end
+  end
 
-    def rebalance
-        return if balanced?
-    
-        ary = level_order.uniq.sort
-        @root = build_tree(ary)
+  def delete(value, node = @root)
+    return node if node.nil?
+
+    if value < node.value
+      node.left = delete(value, node.left)
+    elsif value > node.value
+      node.right = delete(value, node.right)
+    else
+      if node.left.nil?
+        temp = node.right
+        node = nil
+        return temp
+      elsif node.right.nil?
+        temp = node.left
+        node = nil
+        return temp
       end
-    
+      temp = lowest_node(node.right)
+      node.value = temp.value
+      node.right = delete(temp.value, node.right)
+    end
+    node
+  end
+
+  def lowest_node(node)
+    current_lowest = node
+    current_lowest = current_lowest.left until current_lowest.left.nil?
+    current_lowest
+  end
+
+  def rebalance
+    return if balanced?
+
+    ary = level_order.uniq.sort
+    @root = build_tree(ary)
+  end
 end
 
 # Class containing basic binary tree methods
