@@ -35,24 +35,29 @@ class Tree
        end
     end
 
-    def delete(value, root = @root)
-        if root.left.value == value && root.left.left == nil && root.left.right == nil
-            root.left = nil
-            return root
-        elsif root.right.value == value && root.right.left == nil && root.right.right == nil
-            root.right = nil
-            return root
-        end
-        if root.value < value
-            root.right = delete(value, root.right)
-        elsif root.value > value
-            root.left = delete(value, root.left)
+    def delete(value, node = @root)
+        return node if node.nil?
+    
+        if value < node.value
+          node.left = delete(value, node.left)
+        elsif value > node.value
+          node.right = delete(value, node.right)
         else
-            root.value = lowest_node(root.right).value
-            root.delete(root.value, root.right)
+          if node.left.nil?
+            temp = node.right
+            node = nil
+            return temp
+          elsif node.right.nil?
+            temp = node.left
+            node = nil
+            return temp
+          end
+          temp = lowest_node(node.right)
+          node.value = temp.value
+          node.right = delete(temp.value, node.right)
         end
-        root
-    end
+        node
+      end
 
     def lowest_node(node)
         current_lowest = node
