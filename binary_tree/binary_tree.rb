@@ -208,7 +208,7 @@ puts "Is the tree balanced? #{tree.balanced?}"
 print "#{tree.level_order}\n#{tree.pre_order}\n#{tree.post_order}\n#{tree.in_order}\n"
 tree.pretty_print
 puts 'Adding 10 elements higher than 100...'
-10.times do tree.insert(rand(100..1000)) end
+10.times { tree.insert(rand(100..1000)) }
 tree.pretty_print
 puts "Is the tree balanced? #{tree.balanced?}"
 puts 'Rebalancing tree...'
