@@ -7,16 +7,22 @@ class Tree
     end
 
     def build_tree(ary)
-        return nil if ary.empty?
-    
-        middle = (ary.size - 1) / 2
-        root = Node.new(ary[middle])
-    
-        root.left = build_tree(ary[0...middle])
-        root.right = build_tree(ary[(middle + 1)..-1])
-    
-        return root
-      end
+        if ary.is_a?(Integer) || ary.length == 1
+            return Node.new(ary[0])
+        else
+            middle = ary.length/2
+            root = Node.new(ary[middle])
+            root.left = build_tree(ary[0..middle-1])
+            if ary.length == 2 || ary.length == 3
+                root.right = build_tree(ary[1..ary.length-1])
+            else
+                root.right = build_tree(ary[middle+1..ary.length])
+            end
+            if root.left.value == root.value then root.left = nil end
+            if root.right.value == root.value then root.right = nil end
+            return root
+        end
+    end
 
     def insert(value, root = @root)
         return if value == root.value
