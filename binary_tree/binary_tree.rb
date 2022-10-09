@@ -1,6 +1,63 @@
 require 'pry-byebug'
 
+module TraversalMethods
+    def level_order
+        queue = [@root]
+        result = []
+        until queue.empty?
+            node = queue.shift
+            if block_given?
+                yield(node)
+            else
+                result << node.value
+            end
+            queue << node.left unless node.left.nil?
+            queue << node.right unless node.right.nil?
+        end
+        result unless block_given?
+    end
+
+    def in_order(node = @root, result = [], &block)
+        return if node.nil?
+    
+        in_order(node.left, result, &block)
+        if block_given?
+            yield(node)
+        else
+            result << node.value
+        end
+        in_order(node.right, result, &block)
+        result unless block_given?
+    end
+
+    def pre_order (node = @root, result = [], &block)
+        return if node.nil?
+        if block_given?
+            yield(node)
+        else
+            result << node.value
+        end
+        pre_order(node.left, result, &block)
+        pre_order(node.right, result, &block)
+        result unless block_given?
+    end
+
+    def post_order (node = @root, result = [], &block)
+        return if node.nil?
+        post_order(node.left, result, &block)
+        post_order(node.right, result, &block)
+        if block_given?
+            yield(node)
+        else
+            result << node.value
+        end
+        result unless block_given?
+    end
+end
+
 class Tree
+    include TraversalMethods
+
     def initialize(ary)
         @ary = ary.uniq.sort
         @root = build_tree(@ary)
@@ -103,59 +160,6 @@ class Tree
         else
             depth(node, root.left) + 1
         end
-    end
-
-    def level_order
-        queue = [@root]
-        result = []
-        until queue.empty?
-            node = queue.shift
-            if block_given?
-                yield(node)
-            else
-                result << node.value
-            end
-            queue << node.left unless node.left.nil?
-            queue << node.right unless node.right.nil?
-        end
-        result unless block_given?
-    end
-
-    def in_order(node = @root, result = [], &block)
-        return if node.nil?
-    
-        in_order(node.left, result, &block)
-        if block_given?
-            yield(node)
-        else
-            result << node.value
-        end
-        in_order(node.right, result, &block)
-        result unless block_given?
-      end
-
-    def pre_order (node = @root, result = [], &block)
-        return if node.nil?
-        if block_given?
-            yield(node)
-        else
-            result << node.value
-        end
-        pre_order(node.left, result, &block)
-        pre_order(node.right, result, &block)
-        result unless block_given?
-    end
-
-    def post_order (node = @root, result = [], &block)
-        return if node.nil?
-        post_order(node.left, result, &block)
-        post_order(node.right, result, &block)
-        if block_given?
-            yield(node)
-        else
-            result << node.value
-        end
-        result unless block_given?
     end
 
     def balanced?(root = @root)
