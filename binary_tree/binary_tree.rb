@@ -18,7 +18,7 @@ class Tree
     root.left = build_tree(ary[0...middle])
     root.right = build_tree(ary[(middle + 1)..])
 
-    root
+    return root
   end
 
   def insert(value, root = @root)
@@ -40,29 +40,31 @@ class Tree
   end
 
   def delete(value, root = @root)
-    if root.left.value == value && root.left.left.nil? && root.left.right.nil?
-      root.left = nil
-      return root
-    elsif root.right.value == value && root.right.left.nil? && root.right.right.nil?
-      root.right = nil
-      return root
+    if root.left.value == value && root.left.left == nil && root.left.right == nil
+        root.left = nil
+        return root
+    elsif root.right.value == value && root.right.left == nil && root.right.right == nil
+        root.right = nil
+        return root
     end
     if root.value < value
-      root.right = delete(value, root.right)
-    elsif root.value > value
-      root.left = delete(value, root.left)
-    else
-      root.value = lowest_node(root.right).value
-      root.delete(root.value, root.right)
-    end
-    root
-  end
+         root.right = delete(value, root.right)
+     elsif root.value > value
+         root.left = delete(value, root.left)
+     else
+         root.value = lowest_node(root.right).value
+         root.delete(root.value, root.right)
+     end
+     root
+ end
 
-  def lowest_node(node)
+def lowest_node(node)
     current_lowest = node
-    current_lowest = current_lowest.left until current_lowest.left.nil?
+    until current_lowest.left.nil?
+        current_lowest = current_lowest.left
+    end
     current_lowest
-  end
+end
 
   def find(value, root = @root)
     if root.value == value
@@ -153,7 +155,8 @@ end
 
 tree = Tree.new([1, 7, 4, 23, 8, 9, 4, 3, 5, 7, 9, 67, 6345, 324])
 tree.insert(42)
-tree.delete(8)
+tree.delete(3)
 tree.pretty_print
+print Tree.root
 node = tree.find(42)
 puts tree.depth(node)
