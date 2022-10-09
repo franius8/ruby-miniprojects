@@ -121,6 +121,19 @@ class Tree
         result unless block_given?
     end
 
+    def in_order(node = @root, result = [], &block)
+        return if node.nil?
+    
+        in_order(node.left, result, &block)
+        if block_given?
+            yield(node)
+        else
+            result << node.value
+        end
+        in_order(node.right, result, &block)
+        result unless block_given?
+      end
+
     def balanced?(root = @root)
         return true if root.nil?
         if (height(root.left) - height(root.right)).abs <= 1
