@@ -32,7 +32,7 @@ int main ( void ) {
   int random_ary_index;
   
   for (i = 0; i <= 100000; i++) {
-    random_ary_index = rand() % (n + 1 - 0) + 0;
+    random_ary_index = rand() % n;
     number_ary[random_ary_index]++;
   };
   
