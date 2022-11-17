@@ -20,7 +20,7 @@ module CommonElements
     if letter?
       shift_value
     else
-      char
+      @char
     end
   end
 
